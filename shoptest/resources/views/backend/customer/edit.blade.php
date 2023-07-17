@@ -13,7 +13,7 @@
                                 <div>
                                     <div class="form-group">
                                         <label>Tên người dùng</label>
-                                        <input type="text" name="customername"  value="{{ old('customername',$customer->customername) }}" placeholder="Nhập tên người dùng" class="form-control" id="userName">
+                                        <input type="text" name="customername" value="{{ old('customername',$customer->customername) }}" placeholder="Nhập tên người dùng" class="form-control" id="userName">
                                     </div>
                                     <div class="form-group">
                                         <label>Email</label>
@@ -37,27 +37,30 @@
                                     </div>
                                     <div class="form-group">
                                         <label>mật khẩu</label>
-                                        <input type="password" name="password" value="{{ old('password',$customer->password) }}"  class="form-control">
+                                        <input type="password" name="password" class="form-control" placeholder="không sửa thì không cần nhập">
                                     </div>
                                     <div class="form-group">
                                         <label>Quyền</label>
-                                        <select name="role_id" class="form-control" required>
+                                        <select name="role_id" class="form-control" required @if (session('role_id') !=1) disabled @endif>
                                             <option value="">Chọn danh mục</option>
                                             @foreach ($list_role as $role)
+                                            @if (session('role_id') == 1 || $customer->role_id == $role->id)
                                             <option value="{{ $role->id }}" {{ $customer->role_id == $role->id ? 'selected' : '' }}>
                                                 {{ $role->rolename }}
                                             </option>
+                                            @endif
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="form-group text-right mb-0">
-                    <button class="btn btn-success waves-effect waves-light mr-1" type="submit">
-                        <i class="fas fa-save"></i> Lưu
-                    </button>
-                    <a href="{{route('customer.index')}}" type="reset" class="btn btn-secondary waves-effect">
-                        Quay lại
-                    </a>
-                </div>
+                                        <button class="btn btn-success waves-effect waves-light mr-1" type="submit">
+                                            <i class="fas fa-save"></i> Lưu
+                                        </button>
+                                        <a href="{{route('customer.index')}}" type="reset" class="btn btn-secondary waves-effect">
+                                            Quay lại
+                                        </a>
+                                    </div>
         </form>
     </div>
 

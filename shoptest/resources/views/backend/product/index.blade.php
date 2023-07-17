@@ -21,6 +21,25 @@
     .mt-2 {
         margin-top: 2rem;
     }
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 <div class="card">
     <div class="search-container">
@@ -108,6 +127,23 @@
                 </form>
             </div>
         </table>
+    </div>
+    <div class="pagination">
+        @if ($list_product->onFirstPage())
+        <a class="disabled" href="#">&laquo;</a>
+        @else
+        <a href="{{ $list_product->previousPageUrl() }}">&laquo;</a>
+        @endif
+
+        @foreach ($list_product->getUrlRange(1, $list_product->lastPage()) as $page => $url)
+        <a class="{{ $page == $list_product->currentPage() ? 'active' : '' }}" href="{{ $url }}">{{ $page }}</a>
+        @endforeach
+
+        @if ($list_product->hasMorePages())
+        <a href="{{ $list_product->nextPageUrl() }}">&raquo;</a>
+        @else
+        <a class="disabled" href="#">&raquo;</a>
+        @endif
     </div>
 </div>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

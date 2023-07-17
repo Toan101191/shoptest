@@ -66,7 +66,7 @@
             <!-- LOGO -->
             <div class="logo-box">
                 <a href="{{route('admin.dasboard')}}" class="logo text-center">
-                    <img height="120" src="{{asset('img\product\logo.jpg')}}" alt="" height="22">
+                    <img height="80" src="{{asset('img\product\logo.jpg')}}" alt="" height="22">
             </div>
 
             <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
@@ -137,9 +137,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{route('brand.index')}}">
+                            <a href="{{route('news.index')}}">
                                 <i class="pe-7s-rocket"></i>.
-                                <span> TIN TỨC </span>
+                                <span> Tin Tức </span>
                             </a>
                         </li>
                         <li>
@@ -155,10 +155,17 @@
                             </a>
                         </li>
                         <li>
+                            @if(session('role_id') == 1)
                             <a href="{{route('role.index')}}">
                                 <i class="pe-7s-rocket"></i>.
                                 <span> Quyền </span>
                             </a>
+                            @else
+                            <a href="javascript:void(0);" onclick="showAccessDenied()">
+                                <i class="pe-7s-rocket"></i>.
+                                <span> Quyền </span>
+                            </a>
+                            @endif
                         </li>
                         <li>
                             <a href="javascript: void(0);">
@@ -222,10 +229,19 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/30.0.0/classic/ckeditor.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            ClassicEditor.create(document.querySelector('.ckeditor'));
+            const ckeditorElements = document.querySelectorAll('[data-ckeditor]');
+            ckeditorElements.forEach(function(element) {
+                ClassicEditor.create(element);
+            });
         });
     </script>
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+    function showAccessDenied() {
+        swal("Thông báo", "Bạn không có quyền truy cập", "warning");
+    }
+</script>
     @if(Session::has('successMsg'))
     <script>
         swal("Thông báo", "{{Session::get('successMsg')}}", "success");

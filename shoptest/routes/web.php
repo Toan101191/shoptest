@@ -9,10 +9,16 @@ use App\Http\Controllers\backend\NewController;
 use App\Http\Controllers\backend\RoleController;
 use App\Http\Controllers\backend\SlideController;
 use App\Http\Controllers\backend\ProductController;
+use App\Http\Controllers\fontend\HomeController;
+use App\Http\Controllers\fontend\CartController;
+
+Route::post('cart/removeitem/{productId}', [CartController::class, 'removeItem'])->name('cart.removeItem');
+Route::post('updatequantity', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+Route::post('/add-to-cart/{id}', [CartController::class, 'addToCart'])->name('addToCart');
+Route::get('/cart', [CartController::class, 'index'])->name('layout.cart');
 
 
-
-
+Route::get('/', [HomeController::class, 'index'])->name('layout.home');
 Route::get('login', [CustomerController::class, 'login'])->name('layout.login');
 Route::post('postlogin', [CustomerController::class, 'postlogin'])->name('layout.postlogin');
 Route::middleware('auth.check')->group(function () {
@@ -85,6 +91,17 @@ Route::middleware('auth.check')->group(function () {
          Route::post('xall', [CustomerController::class, 'xall'])->name('customer.xall');
          Route::get('update/{customer}', [CustomerController::class, 'edit'])->name('customer.edit');
          Route::post('update/{customer}', [CustomerController::class, 'update'])->name('customer.update');
+      });
+      //news
+      Route::prefix('news')->group(function () {
+         Route::get('/', [NewController::class, 'index'])->name('news.index');
+
+         Route::get('delete/{news}', [NewController::class, 'delete'])->name('news.delete');
+         Route::get('create', [NewController::class, 'create'])->name('news.create');
+         Route::post('store', [NewController::class, 'store'])->name('news.store');
+         Route::post('xall', [NewController::class, 'xall'])->name('news.xall');
+         Route::get('update/{news}', [NewController::class, 'edit'])->name('news.edit');
+         Route::post('update/{news}', [NewController::class, 'update'])->name('news.update');
       });
    });
 });

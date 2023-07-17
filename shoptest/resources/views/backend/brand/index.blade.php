@@ -21,6 +21,26 @@
     .mt-2 {
         margin-top: 2rem;
     }
+
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+    }
+
+    .pagination a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .pagination a:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 <div class="card">
     <div class="search-container">
@@ -68,6 +88,9 @@
                                 Tên thương hiệu
                             </th>
                             <th>
+                                Hình ảnh
+                            </th>
+                            <th>
                                 Chức năng
                             </th>
 
@@ -86,6 +109,9 @@
                                 {{ $brand->brandname }}
                             </td>
                             <td>
+                                <img width="80" src="{{ asset('img/product/' . $brand->image) }}" alt="brand Image">
+                            </td>
+                            <td>
                                 <a href="{{route('brand.edit',['brand'=>$brand->id])}}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> Sửa</a>
                                 <a href="{{route('brand.delete',['brand'=>$brand->id])}}" onclick="return confirm('Bạn có muốn xoá không ?')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Xoá</a>
                             </td>
@@ -95,6 +121,23 @@
                 </form>
             </div>
         </table>
+    </div>
+    <div class="pagination">
+        @if ($list_brand->onFirstPage())
+        <a class="disabled" href="#">&laquo;</a>
+        @else
+        <a href="{{ $list_brand->previousPageUrl() }}">&laquo;</a>
+        @endif
+
+        @foreach ($list_brand->getUrlRange(1, $list_brand->lastPage()) as $page => $url)
+        <a class="{{ $page == $list_brand->currentPage() ? 'active' : '' }}" href="{{ $url }}">{{ $page }}</a>
+        @endforeach
+
+        @if ($list_brand->hasMorePages())
+        <a href="{{ $list_brand->nextPageUrl() }}">&raquo;</a>
+        @else
+        <a class="disabled" href="#">&raquo;</a>
+        @endif
     </div>
 </div>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

@@ -25,18 +25,21 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        $query = Product::query();
+
         $list_brand = Brand::get();
         $list_category = Category::get();
         $searchTerm = $request->input('search');
-        $list_product = Product::where(function ($query) use ($searchTerm) {
-            $query->where('productname', 'LIKE', '%'.$searchTerm.'%');
-        })->get();
-        $searched = $searchTerm !== null && $searchTerm !== '';
-    
-        return view('backend.product.index', compact('list_product', 'searched'));
-    }
-    
 
+        if ($searchTerm) {
+            $query->where('productname', 'LIKE', '%' . $searchTerm . '%');
+        }
+
+        $list_product = $query->paginate(4);
+        $searched = $searchTerm !== null && $searchTerm !== '';
+
+        return view('backend.product.index', compact('list_product', 'searched', 'list_brand', 'list_category'));
+    }
 
     public function create()
     {
@@ -46,15 +49,28 @@ class ProductController extends Controller
         // Truyền biến $product vào view
         return view('backend.product.create', compact('product', 'list_brand', 'list_category'));
     }
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
-        $category = Product::find($id);
-        if ($category == null) {
-            return redirect()->route('product.index')->with('message', ['type' => 'success', 'msg'
-            => 'Không tồn tại']);
+
+        $product = Product::find($id);
+        $past_dir = "img/product/";
+        $path_image_delete = public_path($past_dir . $product->imgproduct);
+        if ($product == null) {
+            return redirect()->route('product.index')->with('message', ['type' => 'danger', 'msg' => 'Không thể thay đổi trạng thái']);
         } else {
-            $category->delete();
-            return redirect()->route('product.index')->with('successMsg', 'Xoá thành công ');
+            if ($product->delete()) {
+                if (File::exists($path_image_delete)) {
+                    File::delete($path_image_delete);
+                }
+                $file = $request->file('imgproduct');
+                if ($file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $product->slug . '.' . $extension;
+                    $file->move($past_dir, $filename);
+                    $product->imgproduct = $filename;
+                }
+                return redirect()->route('product.index')->with('successMsg', 'Xóa thành công');
+            }
         }
     }
 
@@ -69,6 +85,7 @@ class ProductController extends Controller
         $product->imgproduct = $request->imgproduct;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->quantity = $request->quantity;
         $product->outstanding = $request->outstanding;
         $product->created_at = date('Y-m-d H:i:s');
         if ($request->has('imgproduct')) {
@@ -122,6 +139,7 @@ class ProductController extends Controller
         $product->human = $request->human;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->quantity = $request->quantity;
         $product->outstanding = $request->outstanding;
         $product->created_at = date('Y-m-d H:i:s');
 

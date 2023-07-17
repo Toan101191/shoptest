@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
-use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -64,18 +63,30 @@ class CustomerController extends Controller
             return redirect()->route('customer.index')->with('errorMsg', 'Không thể thêm');
         }
     }
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+
         $customer = Customer::find($id);
+        $past_dir = "img/product/";
+        $path_image_delete = public_path($past_dir . $customer->image);
         if ($customer == null) {
-            return redirect()->route('customer.index')->with('message', ['type' => 'success', 'msg'
-            => 'Không tồn tại']);
+            return redirect()->route('customer.index')->with('message', ['type' => 'danger', 'msg' => 'Không thể thay đổi trạng thái']);
         } else {
-            $customer->delete();
-            return redirect()->route('customer.index')->with('successMsg', 'Xoá thành công ');
+            if ($customer->delete()) {
+                if (File::exists($path_image_delete)) {
+                    File::delete($path_image_delete);
+                }
+                $file = $request->file('image');
+                if ($file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $customer->slug . '.' . $extension;
+                    $file->move($past_dir, $filename);
+                    $customer->image = $filename;
+                }
+                return redirect()->route('customer.index')->with('successMsg', 'Xóa thành công');
+            }
         }
     }
-
     public function show($id)
     {
         $customer = Customer::findOrFail($id);
@@ -94,24 +105,28 @@ class CustomerController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $customer = Customer::find($id);
         $customer->customername = $request->customername;
-        $customer->slug = Str::slug($customer->customername = $request->customername, '-');
-        $customer->email= $request->email;
+        $customer->slug = Str::slug($customer->customername, '-');
+        $customer->email = $request->email;
         $customer->phone = $request->phone;
-        $customer->address = $request->address	;
-        $customer->image = $request->image;
-        $customer->password = $request->password;
-        $customer->role_id  = $request->role_id;
+        $customer->address = $request->address;
+        if ($request->filled('password')) {
+            $customer->password = bcrypt($request->password);
+        } else {
+            // Giữ nguyên mật khẩu hiện tại
+            $customer->password = $customer->getOriginal('password');
+        }        
+        $customer->role_id = $request->role_id;
         $customer->created_at = date('Y-m-d H:i:s');
+        // Kiểm tra xem có tệp tin mới được chọn hay không
         if ($request->hasFile('image')) {
-            // Delete the old image file
+            // Xóa tệp tin cũ
             if (File::exists($customer->image)) {
                 File::delete($customer->image);
             }
 
-            // Save the new image file
+            // Lưu tệp tin mới
             $past_dir = "img/product/";
             $file = $request->file('image');
             $extension = $file->getClientOriginalExtension();
@@ -122,14 +137,15 @@ class CustomerController extends Controller
         if ($customer->save()) {
             return redirect()->route('customer.index')->with('successMsg', 'Sửa thành công');
         } else {
-            return redirect()->route('customer.index')->with('errorMsg', 'Không thể sửa ');
+            return redirect()->route('customer.index')->with('errorMsg', 'Không thể sửa');
         }
     }
 
 
+
     public function destroy(string $id)
     {
-        //
+        
     }
     public function postlogin(Request $request)
     {

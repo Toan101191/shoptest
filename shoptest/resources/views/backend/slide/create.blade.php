@@ -13,7 +13,7 @@
                                 <div>
                                     <div class="form-group">
                                         <label for="slidetitle">Tiêu đề slide</label>
-                                        <textarea name="slidetitle" id="slidetitle" placeholder="Nhập tiêu đề slide" class="form-control ckeditor"></textarea>
+                                        <textarea name="slidetitle" id="slidetitle" placeholder="Nhập tiêu đề slide" class="form-control" data-ckeditor></textarea>
                                     </div>
 
                                     <div class="form-group">

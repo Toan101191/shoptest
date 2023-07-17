@@ -17,11 +17,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="slidetitle">Tiêu đề slide</label>
-                                        <textarea name="slidetitle" id="slidetitle" placeholder="Nhập tiêu đề slide" class="form-control ckeditor">{!! old('slidetitle', $slide->slidetitle) !!}</textarea>
+                                        <textarea name="slidetitle" id="slidetitle" placeholder="Nhập tiêu đề slide" class="form-control" data-ckeditor>{!! old('slidetitle', $slide->slidetitle) !!}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>Hình ảnh</label>
-                                        <input type="file" name="slide_image" value="{{ old('slide_image',$slide->slide_image) }} id=" slide_image">
+                                        <input type="file" name="slide_image" value="{{ old('slide_image',$slide->slide_image) }}" id="slide_image">
                                     </div>
                                     <div class="form-group">
                                         <label>Ảnh slide</label>

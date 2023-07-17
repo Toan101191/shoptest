@@ -11,6 +11,6 @@ class News extends Model
     protected $table ='new';
     public function customer()
     {
-        return $this->belongsTo(Role::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
 }

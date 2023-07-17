@@ -68,11 +68,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Mô tả</label>
-                                        <textarea  name="description" id="description"  placeholder="Nhập Mô tả" class="form-control ckeditor">{!! old('description', $product->description) !!}</textarea>
+                                        <textarea  name="description" id="description"  placeholder="Nhập Mô tả" class="form-control" data-ckeditor>{!! old('description', $product->description) !!}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>Giá</label>
                                         <input type="text" name="price" value="{{ old('price',$product->price) }}" placeholder="Nhập Giá" class="form-control" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng</label>
+                                        <input type="text" name="quantity" value="{{ old('quantity',$product->quantity) }}" placeholder="Nhập số lượng" class="form-control" >
                                     </div>
                                     <div class="form-group">
                                         <label>Sản phẩm nổi bật</label>

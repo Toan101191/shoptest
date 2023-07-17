@@ -32,6 +32,9 @@
                     Giá
                 </th>
                 <th>
+                    Số lượng
+                </th>
+                <th>
                     sản phẩm nổi bật
                 </th>
             </tr>
@@ -69,6 +72,9 @@
                 </td>
                 <td>
                     {{ number_format($product->price, 0, ',', '.') }} VND
+                </td>
+                <td>
+                    {{ $product->quantity }}
                 </td>
                 <td>
                     @if($product->outstanding == 1)

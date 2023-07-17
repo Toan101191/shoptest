@@ -8,10 +8,10 @@
    <form action="{{route('role.xall')}}" method="post">
     @csrf
                 <div class="col-md-6 text-left">
-                    <button type="submit" class="btn btn-lg btn-danger"><i class="fas fa-trash"></i> Xoá tất cả </button>
+                    <button type="submit" class="btn  btn-danger"><i class="fas fa-trash"></i> Xoá tất cả </button>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a href="{{route('role.create')}}"  class="btn btn-lg btn-success">
+                    <a href="{{route('role.create')}}"  class="btn  btn-success">
                         <i class="mdi mdi-plus mr-1"></i> Thêm mới
                     </a>
                 </div>

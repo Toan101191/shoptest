@@ -54,15 +54,28 @@ class SlideController extends Controller
             return redirect()->route('slide.index')->with('errorMsg', 'Không thể thêm');
         }
     }
-    public function delete($id)
+    public function delete(Request $request, $id)
     {
+
         $slide = Slide::find($id);
+        $past_dir = "img/product/";
+        $path_image_delete = public_path($past_dir . $slide->slide_image);
         if ($slide == null) {
-            return redirect()->route('slide.index')->with('message', ['type' => 'success', 'msg'
-            => 'Không tồn tại']);
+            return redirect()->route('slide.index')->with('message', ['type' => 'danger', 'msg' => 'Không thể thay đổi trạng thái']);
         } else {
-            $slide->delete();
-            return redirect()->route('slide.index')->with('successMsg', 'Xoá thành công ');
+            if ($slide->delete()) {
+                if (File::exists($path_image_delete)) {
+                    File::delete($path_image_delete);
+                }
+                $file = $request->file('slide_image');
+                if ($file) {
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = $slide->slug . '.' . $extension;
+                    $file->move($past_dir, $filename);
+                    $slide->slide_image = $filename;
+                }
+                return redirect()->route('customer.index')->with('successMsg', 'Xóa thành công');
+            }
         }
     }
 

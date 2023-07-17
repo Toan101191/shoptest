@@ -13,7 +13,7 @@
                                 <div>
                                     <div class="form-group">
                                         <label>Tên sản phẩm</label>
-                                        <input type="text" name="productname" parsley-trigger="change" required="" placeholder="Nhập tên sản phẩm" class="form-control" id="userName">
+                                        <input type="text" name="productname"  required="" placeholder="Nhập tên sản phẩm" class="form-control" >
                                     </div>
                                     <div class="form-group">
                                         <label>Thương hiệu</label>
@@ -64,11 +64,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Mô tả</label>
-                                        <textarea  name="description" id="description"  placeholder="Nhập Mô tả" class="form-control ckeditor" id="userName"></textarea>
+                                        <textarea  name="description" id="description"  placeholder="Nhập Mô tả" class="form-control" data-ckeditor></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>Giá</label>
-                                        <input type="text" name="price" parsley-trigger="change" required="" placeholder="Nhập Giá" class="form-control" id="userName">
+                                        <input type="text" name="price"  required="" placeholder="Nhập Giá" class="form-control" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Số lượng</label>
+                                        <input type="text" name="quantity"  required="" placeholder="Nhập số lượng" class="form-control" >
                                     </div>
                                     <div class="form-group">
                                         <label>Sản phẩm nổi bật</label>
