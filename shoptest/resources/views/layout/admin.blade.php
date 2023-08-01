@@ -19,7 +19,6 @@
     <link href="{{asset('assets\css\app.min.css')}}" rel="stylesheet" type="text/css" id="app-stylesheet">
 
 </head>
-
 <body>
 
     <!-- Begin page -->
@@ -44,21 +43,24 @@
                         <div>
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="mdi mdi-account-outline"></i>
-                                <span>Profile</span>
+                                <span>Thông tin cá nhân</span>
                             </a>
                         </div>
-                        <div class="dropdown-divider"></div>
-
+                        <div>
+                            <a href="/" class="dropdown-item notify-item">
+                                <i class="mdi mdi-account-outline"></i>
+                                <span>Về trang chủ</span>
+                            </a>
+                        </div>
                         <div>
                             <form id="logout-form" action="{{ route('layout.logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                             <a href="javascript:void(0);" class="dropdown-item notify-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="mdi mdi-logout-variant"></i>
-                                <span>Logout</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </div>
-
                     </div>
                 </li>
             </ul>
@@ -66,7 +68,7 @@
             <!-- LOGO -->
             <div class="logo-box">
                 <a href="{{route('admin.dasboard')}}" class="logo text-center">
-                    <img height="80" src="{{asset('img\product\logo.jpg')}}" alt="" height="22">
+                    <img height="56"  src="{{asset('img\product\logo.jpg')}}" alt="" height="22">
             </div>
 
             <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
@@ -93,127 +95,116 @@
 
             </ul>
         </div>
-        <!-- end Topbar -->
-
-
-        <!-- ========== Left Sidebar Start ========== -->
         <div class="left-side-menu">
 
-            <div class="slimscroll-menu">
+        <div class="slimscroll-menu">
 
-                <!--- Sidemenu -->
-                <div id="sidebar-menu">
+            <!--- Sidemenu -->
+            <div id="sidebar-menu">
 
-                    <ul class="metismenu" id="side-menu">
-                        <li>
-                            <a href="{{route('product.index')}}">
-                                <i class="pe-7s-album"></i>.
-                                <span> Sản phẩm </span>
-                            </a>
-                        </li>
+                <ul class="metismenu" id="side-menu">
+                    <li>
+                        <a href="{{route('product.index')}}">
+                            <i class="pe-7s-album"></i>.
+                            <span> Sản phẩm </span>
+                        </a>
+                    </li>
 
-                        <li>
-                            <a href="{{route('category.index')}}">
-                                <i class="pe-7s-smile"></i>.
-                                <span> Danh mục sản phẩm </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('brand.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Thương hiệu </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('customer.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Người dùng </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('brand.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Hoá đơn </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('news.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Tin Tức </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('brand.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Đơn hàng </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{route('slide.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Slide </span>
-                            </a>
-                        </li>
-                        <li>
-                            @if(session('role_id') == 1)
-                            <a href="{{route('role.index')}}">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Quyền </span>
-                            </a>
-                            @else
-                            <a href="javascript:void(0);" onclick="showAccessDenied()">
-                                <i class="pe-7s-rocket"></i>.
-                                <span> Quyền </span>
-                            </a>
-                            @endif
-                        </li>
-                        <li>
-                            <a href="javascript: void(0);">
-                                <i class="mdi mdi-content-copy"></i>
-                                <span> Extra Pages </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <ul class="nav-second-level" aria-expanded="false">
-                                <li><a href="pages-timeline.html">Timeline</a></li>
-                                <li><a href="pages-invoice.html">Invoice</a></li>
-                                <li><a href="pages-pricing.html">Pricing</a></li>
-                                <li><a href="pages-gallery.html">Gallery</a></li>
-                                <li><a href="pages-maintenance.html">Maintenance</a></li>
-                                <li><a href="pages-comingsoon.html">Coming Soon</a></li>
-                            </ul>
-                        </li>
-
-                    </ul>
-
-                </div>
-
+                    <li>
+                        <a href="{{route('category.index')}}">
+                            <i class="pe-7s-smile"></i>.
+                            <span> Danh mục sản phẩm </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('brand.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Thương hiệu </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('customer.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Người dùng </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('invoice.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Hoá đơn </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('news.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Tin Tức </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('oder.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Đơn hàng </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{route('slide.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Slide </span>
+                        </a>
+                    </li>
+                    <li>
+                        @if(session('role_id') == 1)
+                        <a href="{{route('role.index')}}">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Quyền </span>
+                        </a>
+                        @else
+                        <a href="javascript:void(0);" onclick="showAccessDenied()">
+                            <i class="pe-7s-rocket"></i>.
+                            <span> Quyền </span>
+                        </a>
+                        @endif
+                    </li>
+                    <li>
+                        <a href="javascript: void(0);">
+                            <i class="mdi mdi-content-copy"></i>
+                            <span> Extra Pages </span>
+                            <span class="menu-arrow"></span>
+                        </a>
+                        <ul class="nav-second-level" aria-expanded="false">
+                            <li><a href="pages-timeline.html">Timeline</a></li>
+                            <li><a href="pages-invoice.html">Invoice</a></li>
+                            <li><a href="pages-pricing.html">Pricing</a></li>
+                            <li><a href="pages-gallery.html">Gallery</a></li>
+                            <li><a href="pages-maintenance.html">Maintenance</a></li>
+                            <li><a href="pages-comingsoon.html">Coming Soon</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
+    </div>
+    <div class="content-page">
+        <div class="content">
 
-        <div class="content-page">
-            <div class="content">
+            <!-- Start Content-->
+            <div class="container-fluid">
 
-                <!-- Start Content-->
-                <div class="container-fluid">
-
-                    <!-- start page title -->
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="page-title-box">
-                                <h4 class="page-title">@yield('name')</h4>
-                            </div>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">@yield('name')</h4>
                         </div>
                     </div>
+                </div>
 
-                </div> <!-- end container-fluid -->
+            </div> <!-- end container-fluid -->
 
-            </div> <!-- end content -->
-            @yield('content')
-
-        </div>
-
+        </div> <!-- end content -->
+        @yield('content')
     </div>
-
+    </div>
     <!-- Vendor js -->
     <script src="{{asset('assets\js\vendor.min.js')}}"></script>
 
@@ -238,10 +229,10 @@
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script>
-    function showAccessDenied() {
-        swal("Thông báo", "Bạn không có quyền truy cập", "warning");
-    }
-</script>
+        function showAccessDenied() {
+            swal("Thông báo", "Bạn không có quyền truy cập", "warning");
+        }
+    </script>
     @if(Session::has('successMsg'))
     <script>
         swal("Thông báo", "{{Session::get('successMsg')}}", "success");

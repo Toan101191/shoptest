@@ -1,23 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\backend;
+
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 class CustomerController extends Controller
 {
 
     public function index(Request $request)
     {
         $searchTerm = $request->input('search');
-        $list_customer = Customer::where('customername', 'LIKE', '%'.$searchTerm.'%')->get();
+        $list_customer = Customer::where('customername', 'LIKE', '%' . $searchTerm . '%')->get();
         $searched = $searchTerm !== null && $searchTerm !== '';
-    
+
         return view('backend.customer.index', compact('list_customer', 'searched'));
     }
 
@@ -42,12 +45,12 @@ class CustomerController extends Controller
         $customer = new Customer;
         $customer->customername = $request->customername;
         $customer->slug = Str::slug($customer->customername = $request->customername, '-');
-        $customer->email= $request->email;
+        $customer->email = $request->email;
         $customer->phone = $request->phone;
-        $customer->address = $request->address	;
+        $customer->address = $request->address;
         $customer->image = $request->image;
         $customer->password = bcrypt($request->password);
-        $customer->role_id  = 2 ;
+        $customer->role_id  = 2;
         $customer->created_at = date('Y-m-d H:i:s');
         if ($request->has('image')) {
             $past_dir = "img/product/";
@@ -116,7 +119,7 @@ class CustomerController extends Controller
         } else {
             // Giữ nguyên mật khẩu hiện tại
             $customer->password = $customer->getOriginal('password');
-        }        
+        }
         $customer->role_id = $request->role_id;
         $customer->created_at = date('Y-m-d H:i:s');
         // Kiểm tra xem có tệp tin mới được chọn hay không
@@ -140,13 +143,6 @@ class CustomerController extends Controller
             return redirect()->route('customer.index')->with('errorMsg', 'Không thể sửa');
         }
     }
-
-
-
-    public function destroy(string $id)
-    {
-        
-    }
     public function postlogin(Request $request)
     {
         $email = $request->email;
@@ -160,8 +156,8 @@ class CustomerController extends Controller
         if (Auth::attempt($arr)) {
             $customer = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
 
-            // Kiểm tra role_id có giá trị 1 hoặc 3
-            if ($customer->role_id == 1 || $customer->role_id == 3) {
+            // Kiểm tra xem user có tồn tại và đã đăng nhập thành công
+            if ($customer) {
                 // Lưu thông tin người dùng vào session
                 session([
                     'customer_id' => $customer->id,
@@ -183,14 +179,15 @@ class CustomerController extends Controller
                     Cookie::queue(Cookie::forget('remember_password'));
                 }
 
-                return redirect()->route('admin.dasboard')->with('successMsg', 'Đăng nhập thành công');
+                return redirect()->route('layout.home')->with('successMsg', 'Đăng nhập thành công');
             } else {
-                return redirect()->route('layout.login')->with('errorMsg', 'Bạn không có quyền truy cập');
+                return redirect()->route('layout.login')->with('errorMsg', 'Sai thông tin đăng nhập');
             }
         } else {
             return redirect()->route('layout.login')->with('errorMsg', 'Sai thông tin đăng nhập');
         }
     }
+
     public function login()
     {
         return view('layout.login');
@@ -199,6 +196,7 @@ class CustomerController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('layout.login')->with('successMsg', 'Đăng xuất thành công');
+        Session::flush(); // Xóa toàn bộ dữ liệu phiên
+        return redirect()->route('layout.home')->with('successMsg', 'Đăng xuất thành công');
     }
 }

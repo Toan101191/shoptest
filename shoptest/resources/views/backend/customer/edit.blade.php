@@ -17,7 +17,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input type="text" name="email" value="{{ old('email',$customer->email) }}" class="form-control">
+                                        @if(session('role_id') != 1 && $customer->role_id == 1)
+                                        <input type="text" name="email" value="{{ $customer->email }}" class="form-control" readonly>
+                                        @else
+                                        <input type="text" name="email" value="{{ $customer->email }}" class="form-control">
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label>sdt</label>
@@ -36,8 +40,17 @@
                                         <img id="previewImg" src="#" alt="" style="max-width: 100px; max-height: 150px;">
                                     </div>
                                     <div class="form-group">
-                                        <label>mật khẩu</label>
-                                        <input type="password" name="password" class="form-control" placeholder="không sửa thì không cần nhập">
+                                        <label>Mật khẩu</label>
+                                        @if(session('role_id') == 1)
+                                        <input type="password" name="password" class="form-control" placeholder="Không sửa thì không cần nhập">
+                                        @else
+                                        @if($customer->role_id == 1)
+                                        <input type="password" name="password" class="form-control" placeholder="Không thay đổi" readonly>
+                                        <small class="text-danger">Bạn không có quyền sửa</small>
+                                        @else
+                                        <input type="password" name="password" class="form-control" placeholder="Không sửa thì không cần nhập">
+                                        @endif
+                                        @endif
                                     </div>
                                     <div class="form-group">
                                         <label>Quyền</label>
@@ -51,6 +64,9 @@
                                             @endif
                                             @endforeach
                                         </select>
+                                        @if (session('role_id') != 1)
+                                        <small class="text-danger">Bạn không có quyền sửa</small>
+                                        @endif
                                     </div>
 
                                     <div class="form-group text-right mb-0">
@@ -61,18 +77,15 @@
                                             Quay lại
                                         </a>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div><!-- end col-->
+            </div>
         </form>
     </div>
-
-</div>
-</div>
-
-</div>
-</div><!-- end col-->
-
-</div>
-</form>
-</div>
 </div>
 <script>
     document.getElementById('image').addEventListener('change', function(e) {
